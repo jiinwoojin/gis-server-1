@@ -29,5 +29,6 @@ SHELL [ "/usr/bin/scl", "enable", "devtoolset-7" ]
 RUN ./build.sh
 
 RUN rm -rf ./*
+RUN chmod -R 777 /app && chmod -R 777 /var/tmp && chmod -R 777 /tmp && chmod -R 777 /usr/tmp
 
 EXPOSE 8080

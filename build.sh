@@ -4,13 +4,13 @@ cd source
 
 git clone https://github.com/jiinwoojin/mapproxy.git
 git clone https://github.com/jiinwoojin/mapserver.git
-wget https://download.osgeo.org/proj/proj-${PROJ_VERSION}.tar.gz
-wget https://download.osgeo.org/proj/proj-datumgrid-1.8.zip
-wget https://download.osgeo.org/geos/geos-${GEOS_VERSION}.tar.bz2
-wget http://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz
-wget https://ftp.postgresql.org/pub/source/v${POSTGRESQL_VERSION}/postgresql-${POSTGRESQL_VERSION}.tar.gz
-wget http://postgis.net/stuff/postgis-${POSTGIS_VERSION}.tar.gz
-wget http://www.cmake.org/files/v3.9/cmake-${CMAKE_VERSION}.tar.gz
+wget --quiet https://download.osgeo.org/proj/proj-${PROJ_VERSION}.tar.gz
+wget --quiet https://download.osgeo.org/proj/proj-datumgrid-1.8.zip
+wget --quiet https://download.osgeo.org/geos/geos-${GEOS_VERSION}.tar.bz2
+wget --quiet http://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz
+wget --quiet https://ftp.postgresql.org/pub/source/v${POSTGRESQL_VERSION}/postgresql-${POSTGRESQL_VERSION}.tar.gz
+wget --quiet http://postgis.net/stuff/postgis-${POSTGIS_VERSION}.tar.gz
+wget --quiet http://www.cmake.org/files/v3.9/cmake-${CMAKE_VERSION}.tar.gz
 tar -xf geos-${GEOS_VERSION}.tar.bz2
 tar -zxf gdal-${GDAL_VERSION}.tar.gz
 tar -zxf cmake-${CMAKE_VERSION}.tar.gz
