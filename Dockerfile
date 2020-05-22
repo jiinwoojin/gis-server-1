@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
-# mapproxy + mapserver
+# mapserver.conf + httpd
 
 FROM centos:7
 MAINTAINER JIIN System <jiinwoojin@gmail.com>
 
-ENV ROOTDIR=/app \
+ENV ROOTDIR=/app/jiapp \
     PROJ_VERSION="6.1.1" \
     GEOS_VERSION="3.8.0" \
     GDAL_VERSION="2.4.4" \
-    CMAKE_VERSION="3.9.6" \
     POSTGRESQL_VERSION="12.1" \
     POSTGIS_VERSION="3.0.0" \
+    CMAKE_VERSION="3.9.6" \
     LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64:/usr/lib:/usr/lib64
 
 RUN mkdir -p ${ROOTDIR}/source
 
-WORKDIR ${ROOTDIR}
+WORKDIR ${ROOTDIR}/
 
 ADD ./ ./
 
@@ -28,7 +28,6 @@ SHELL [ "/usr/bin/scl", "enable", "devtoolset-7" ]
 
 RUN ./build.sh
 
-RUN rm -rf ./*
-RUN chmod -R 777 /app && chmod -R 777 /var/tmp && chmod -R 777 /tmp && chmod -R 777 /usr/tmp
+EXPOSE 80
 
-EXPOSE 8080
+CMD apachectl -D FOREGROUND

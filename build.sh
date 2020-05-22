@@ -1,8 +1,8 @@
 #! /bin/bash
 
+# shellcheck disable=SC2164
 cd source
 
-git clone https://github.com/jiinwoojin/mapproxy.git
 git clone https://github.com/jiinwoojin/mapserver.git
 wget --quiet https://download.osgeo.org/proj/proj-${PROJ_VERSION}.tar.gz
 wget --quiet https://download.osgeo.org/proj/proj-datumgrid-1.8.zip
@@ -50,6 +50,7 @@ yum -y install sqlite sqlite-devel autoconf perl-Test-Harness perl-Thread-Queue 
                pycairo-devel libzip php-cli php-common php php-devel php-fpm librsvg2 gdk-pixbuf2-devel \
                librsvg2-devel librsvg2-tools python-yaml python-lxml proj proj-devel proj-epsg proj-nad geos-devel
 
+# shellcheck disable=SC2086
 cd ${ROOTDIR}/rpm
 yum -y localinstall agg-devel-2.5-18.el7.x86_64.rpm arpack-3.1.3-2.el7.x86_64.rpm arpack-devel-3.1.3-2.el7.x86_64.rpm bison-devel-3.0.4-2.el7.x86_64.rpm \
                     cfitsio-3.370-10.el7.x86_64.rpm cfitsio-devel-3.370-10.el7.x86_64.rpm CharLS-1.0-5.el7.x86_64.rpm CharLS-devel-1.0-5.el7.x86_64.rpm \
@@ -58,23 +59,25 @@ yum -y localinstall agg-devel-2.5-18.el7.x86_64.rpm arpack-3.1.3-2.el7.x86_64.rp
                     libdap-3.13.1-2.el7.x86_64.rpm libdap-devel-3.13.1-2.el7.x86_64.rpm spawn-fcgi-1.6.3-5.el7.x86_64.rpm python-shapely-1.5.2-2.el7.x86_64.rpm \
                     libmemcached-devel-1.0.16-5.el7.x86_64.rpm libzstd-1.4.4-1.el7.x86_64.rpm libzstd-devel-1.4.4-1.el7.x86_64.rpm pyproj-1.9.2-6.20120712svn300.el7.x86_64.rpm
 
+# shellcheck disable=SC2086
 cd ${ROOTDIR}/source/cmake-${CMAKE_VERSION}
 ./bootstrap
 make -j8
 make -j8 install
 
+# shellcheck disable=SC2086
 cd ${ROOTDIR}/source/proj
 ./configure CC=gcc --disable-static
 make -j8
 make -j8 install
 
-# shellcheck disable=SC2164
+# shellcheck disable=SC2086
 cd ${ROOTDIR}/source/geos-${GEOS_VERSION}
 ./configure --enable-python --disable-static
 make -j8
 make -j8 install
 
-# shellcheck disable=SC2164
+# shellcheck disable=SC2086
 cd ${ROOTDIR}/source/postgresql-${POSTGRESQL_VERSION}
 ./configure --enable-depend --enable-nls=ko --with-openssl \
             --with-tcl --with-python --with-gssapi --with-ldap \
@@ -91,7 +94,7 @@ export LD_LIBRARY_PATH=/usr/local/pgsql/lib:${LD_LIBRARY_PATH}
 export PKG_CONFIG_PATH=/usr/local/pgsql/lib/pkgconfig
 export PATH=/usr/local/pgsql/bin:${PATH}
 
-# shellcheck disable=SC2164
+# shellcheck disable=SC2086
 cd ${ROOTDIR}/source/gdal-${GDAL_VERSION}
 ./configure --with-libtiff --with-geotiff=internal \
             --with-jpeg --with-png --with-libz \
@@ -111,13 +114,14 @@ python setup.py install
 cd samples
 python gdalinfo.py --formats
 
-# shellcheck disable=SC2164
+# shellcheck disable=SC2086
 cd ${ROOTDIR}/source/postgis-${POSTGIS_VERSION}
 ./configure --with-pgconfig=/usr/local/pgsql/bin/pg_config --with-gdalconfig=/usr/local/bin/gdal-config \
             --with-geosconfig=/usr/local/bin/geos-config
 make -j8
 make -j8 install
 
+# shellcheck disable=SC2086
 cd ${ROOTDIR}/source/mapserver
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release \
@@ -151,9 +155,13 @@ make -j8
 make -j8 install
 ldconfig
 
-cd ${ROOTDIR}/source/mapproxy
-pip install --upgrade pip
-pip install Pillow
-pip freeze
-python setup.py build
-python setup.py install
+# shellcheck disable=SC2086
+cd ${ROOTDIR}
+cp ./mapserver.conf /etc/httpd/conf.d/
+cp ./httpd.conf /etc/httpd/conf/
+
+mkdir -p /usr/lib/cgi-bin
+ln -s /usr/local/bin/mapserv /usr/lib/cgi-bin/mapserv
+chmod 755 /usr/lib/cgi-bin
+
+rm -rf ./*
