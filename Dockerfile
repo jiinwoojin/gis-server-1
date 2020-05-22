@@ -28,6 +28,7 @@ SHELL [ "/usr/bin/scl", "enable", "devtoolset-7" ]
 
 RUN ./build.sh
 
-EXPOSE 80
+CMD ["/usr/sbin/setenforce", "0"]
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
 
-CMD apachectl -D FOREGROUND
+EXPOSE 80
